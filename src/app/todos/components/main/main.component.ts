@@ -1,11 +1,13 @@
 import { Component, SimpleChanges, computed, inject } from "@angular/core";
 import { TodosService } from "../../services/todos.service";
 import { FilterEnum } from "../../types/filter.enum";
+import { TodoCompoent } from "../todo/todo.component";
 
 @Component({
     selector: 'app-todos-main',
     templateUrl: './main.component.html',
-    standalone: true
+    standalone: true,
+    imports: [TodoCompoent]
 })
 export class MainComponent {
     todosService = inject(TodosService)

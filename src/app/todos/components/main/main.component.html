@@ -1,9 +1,9 @@
 <section class="main">
     <ul class="todo-list">
         @for(todo of visibleTodos(); track todosService) {
-        <div>
-            {{todo.text}}
-        </div>
+        <app-todos-todo [todo]="todo">
+
+        </app-todos-todo>
         }
     </ul>
 </section>
