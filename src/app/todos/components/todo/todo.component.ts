@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, inject } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, inject } from "@angular/core";
 import { TodoInterface } from "../../types/todo.interface";
 import { CommonModule } from "@angular/common";
 import { TodosService } from "../../services/todos.service";
@@ -9,10 +9,12 @@ import { TodosService } from "../../services/todos.service";
     standalone: true,
     imports: [CommonModule]
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent implements OnInit, OnChanges {
     @Input({ required: true }) todo!: TodoInterface;
     @Input({ required: true }) isEditing!: boolean;
     @Output() setEditingId: EventEmitter<string | null> = new EventEmitter()
+
+    @ViewChild('textInput') textInput?: ElementRef
 
     todoService = inject(TodosService)
 
@@ -20,7 +22,14 @@ export class TodoComponent implements OnInit {
 
     ngOnInit(): void {
         this.editingText = this.todo.text;
+    }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['isEditing'].currentValue) {
+            setTimeout(() => {
+                this.textInput?.nativeElement.focus()
+            }, 0);
+        }
     }
 
     changeText(event: Event) {
@@ -35,5 +44,13 @@ export class TodoComponent implements OnInit {
 
     setTodoInEditMode(): void {
         this.setEditingId.emit(this.todo.id)
+    }
+
+    removeTodo(): void {
+        this.todoService.removeTodo(this.todo.id)
+    }
+
+    toggleTodo(): void {
+        this.todoService.toggleTodo(this.todo.id)
     }
 }
