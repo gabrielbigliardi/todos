@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, 
 import { TodoInterface } from "../../types/todo.interface";
 import { CommonModule } from "@angular/common";
 import { TodosService } from "../../services/todos.service";
+import { TodosFirebaseService } from "../../services/todosFirebase.service";
 
 @Component({
     selector: "app-todos-todo",
@@ -17,6 +18,7 @@ export class TodoComponent implements OnInit, OnChanges {
     @ViewChild('textInput') textInput?: ElementRef
 
     todoService = inject(TodosService)
+    todosFirebaseService = inject(TodosFirebaseService)
 
     editingText: string = ''
 
@@ -47,7 +49,9 @@ export class TodoComponent implements OnInit, OnChanges {
     }
 
     removeTodo(): void {
-        this.todoService.removeTodo(this.todo.id)
+        this.todosFirebaseService.removeTodo(this.todo.id).subscribe(() => {
+            this.todoService.removeTodo(this.todo.id)
+        })
     }
 
     toggleTodo(): void {
