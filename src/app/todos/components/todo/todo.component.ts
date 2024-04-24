@@ -40,7 +40,14 @@ export class TodoComponent implements OnInit, OnChanges {
     }
 
     changeTodo(): void {
-        this.todoService.changeTodo(this.todo.id, this.editingText)
+        const dataToUpdate = {
+            text: this.editingText,
+            isCompleted: !this.todo.isCompleted
+        }
+
+        this.todosFirebaseService.updateTodo(this.todo.id, dataToUpdate).subscribe(() => {
+            this.todoService.changeTodo(this.todo.id, this.editingText)
+        })
         this.setEditingId.emit(null)
     }
 
@@ -55,6 +62,12 @@ export class TodoComponent implements OnInit, OnChanges {
     }
 
     toggleTodo(): void {
-        this.todoService.toggleTodo(this.todo.id)
+        const dataToUpdate = {
+            text: this.todo.text,
+            isCompleted: !this.todo.isCompleted
+        }
+        this.todosFirebaseService.updateTodo(this.todo.id, dataToUpdate).subscribe(() => {
+            this.todoService.toggleTodo(this.todo.id)
+        })
     }
 }

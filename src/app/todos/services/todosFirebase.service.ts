@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { Firestore, collectionData, addDoc, fromRef, doc, deleteDoc } from "@angular/fire/firestore";
+import { Firestore, collectionData, addDoc, fromRef, doc, deleteDoc, setDoc } from "@angular/fire/firestore";
 import { collection } from "@firebase/firestore";
 import { Observable, from } from "rxjs";
 import { TodoInterface } from "../types/todo.interface";
@@ -27,6 +27,12 @@ export class TodosFirebaseService {
     removeTodo(todoId: string): Observable<void> {
         const docRef = doc(this.firestore, 'cart/' + todoId)
         const promise = deleteDoc(docRef)
+        return from(promise)
+    }
+
+    updateTodo(todoId: string, dataToUpdate: { text: string, isCompleted: boolean }): Observable<void> {
+        const docRef = doc(this.firestore, 'cart/' + todoId)
+        const promise = setDoc(docRef, dataToUpdate)
         return from(promise)
     }
 }
