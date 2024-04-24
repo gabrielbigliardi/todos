@@ -11,6 +11,7 @@ import { CommonModule } from "@angular/common";
 })
 export class FooterComponent {
     todosService = inject(TodosService)
+
     filterSig = this.todosService.filterSig
     filterEnum = FilterEnum
     activeCount = computed(() => {
@@ -23,6 +24,5 @@ export class FooterComponent {
         event.preventDefault()
         this.todosService.changeFilter(filterName)
         console.log('affter changeFilter', this.todosService.filterSig());
-
     }
 }
