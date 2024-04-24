@@ -34,4 +34,10 @@ export class TodosService {
         this.todosSig.update(todos => todos.map(todo => todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo))
     }
 
+    toggleAll(isCompleted: boolean): void {
+        this.todosSig.update(todos =>
+            todos.map(todo => ({ ...todo, isCompleted }))
+        )
+    }
+
 }
